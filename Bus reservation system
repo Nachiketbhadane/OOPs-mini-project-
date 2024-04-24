@@ -1,0 +1,185 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+const int TOTAL_SEATS = 30;
+
+class Passenger {
+protected:
+    string name;
+    int age;
+
+public:
+    Passenger() {
+        name="Anna";
+        age=00;
+    }
+
+    void enterInfo() {
+        cout << "Enter your name: ";
+        cin >> name;
+        cout << "Enter your age: ";
+        cin >> age;
+    }
+};
+
+class ReservationSystem : public Passenger {
+private:
+    bool seats[TOTAL_SEATS] = {false};
+    string startPoint;
+    string destination;
+    int price;
+    int seatNumber;
+
+public:
+    ReservationSystem() {
+        startPoint="Pune";
+        destination= "Pandharpur";
+        price=300;
+        seatNumber=1;
+    }
+
+    void chooseDestination() {
+        cout << "Starting point: Pune" << endl;
+        cout << "Enter your destination:" << endl;
+        cout << "1. Nashik" << endl;
+        cout << "2. Pandharpur" << endl;
+        cout << "3. Ahilyanagar" << endl;
+        cout << "4. Mumbai" << endl;
+        cout << "5. Beed" << endl;
+        cout << "6. Malegaon" << endl;
+        int choice;
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                destination = "Nashik";
+                price = 200;
+                break;
+            case 2:
+                destination = "Pandharpur";
+                price = 300;
+                break;
+            case 3:
+                destination = "Ahilyanagar";
+                price = 100;
+                break;
+            case 4:
+                destination = "Mumbai";
+                price = 200;
+                break;
+            case 5:
+                destination = "Beed";
+                price = 250;
+                break;
+            case 6:
+                destination = "Malegaon";
+                price = 500;
+                break;
+            default:
+                cout << "Invalid choice." << endl;
+                break;
+        }
+    }
+
+    void displayMenu() {
+        cout << "1. Reserve a seat" << endl;
+        cout << "2. Cancel reservation" << endl;
+        cout << "3. Display available seats" << endl;
+        cout << "4. Exit" << endl;
+    }
+
+    void reserveSeat() {
+        cout << "Enter seat number to reserve (1-" << TOTAL_SEATS << "): ";
+        cin >> seatNumber;
+
+        if (seatNumber < 1 || seatNumber > TOTAL_SEATS) {
+            cout << "Invalid seat number. Please try again." << endl;
+            return;
+        }
+
+        if (seats[seatNumber - 1]) {
+            cout << "Seat " << seatNumber << " is already reserved." << endl;
+        } else {
+            seats[seatNumber - 1] = true;
+            cout << "Seat " << seatNumber << " reserved successfully." << endl;
+        }
+    }
+
+    void cancelReservation() {
+        cout << "Enter seat number to cancel reservation (1-" << TOTAL_SEATS << "): ";
+        cin >> seatNumber;
+
+        if (seatNumber < 1 || seatNumber > TOTAL_SEATS) {
+            cout << "Invalid seat number. Please try again." << endl;
+            return;
+        }
+
+        if (seats[seatNumber - 1]) {
+            seats[seatNumber - 1] = false;
+            cout << "Reservation for seat " << seatNumber << " canceled successfully." << endl;
+        } else {
+            cout << "Seat " << seatNumber << " is not reserved." << endl;
+        }
+    }
+
+    void displayAvailableSeats() {
+        cout << "Available seats:" << endl;
+        for (int i = 0; i < TOTAL_SEATS; ++i) {
+            if (!seats[i]) {
+                cout << "Seat " << (i + 1) << endl;
+            }
+        }
+    }
+
+    void run() {
+        enterInfo();
+        chooseDestination();
+        int choice;
+
+        do {
+            displayMenu();
+            cout << "Enter your choice: ";
+            cin >> choice;
+
+            switch (choice) {
+                case 1:
+                    reserveSeat();
+                    break;
+                case 2:
+                    cancelReservation();
+                    break;
+                case 3:
+                    displayAvailableSeats();
+                    break;
+                case 4:
+                    cout << "Exiting program." << endl;
+                    break;
+                default:
+                    cout << "Invalid choice. Please try again." << endl;
+                    break;
+            }
+        } while (choice != 4);
+
+        cout <<"--------------------------------------------------------------------------------------------"<<endl;
+        cout <<"|                        PUNE TRAVELS                                                       |"<<endl;
+        cout <<"--------------------------------------------------------------------------------------------" << endl;
+        cout <<"|                        RESERVATION TICKET                                                 |" << endl;
+        cout <<"--------------------------------------------------------------------------------------------"  <<endl;
+        cout <<"|   Name:                    |" << name << endl;
+        cout <<"|   Age:                     |" << age << endl;
+        cout <<"|   Reservation seat number: |" << seatNumber<< endl;
+        cout <<"|   Starting point: Pune     |" << endl;
+        cout <<"|   Destination:             |" << destination <<endl;
+        cout <<"|   Price:                   |" << price << endl;
+        cout <<"--------------------------------------------------------------------------------------------"<<endl;
+        cout <<"|                         THANK YOU!!                                                        |" << endl;
+        cout <<" -------------------------------------------------------------------------------------------- " << endl;
+    }
+};
+
+int main() {
+    ReservationSystem reservationSystem;
+    reservationSystem.run();
+    return 0;
+}
